@@ -1,0 +1,32 @@
+[
+{
+  "directory": "/home/moha/Fundamental_Initial/build",
+  "command": "/usr/bin/g++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DSRCDIR=/home/moha/Fundamental_Initial -isystem /usr/share/Imagine++/include -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -isystem /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -g -fPIC -o CMakeFiles/Fundamental.dir/Fundamental.cpp.o -c /home/moha/Fundamental_Initial/Fundamental.cpp",
+  "file": "/home/moha/Fundamental_Initial/Fundamental.cpp"
+},
+{
+  "directory": "/home/moha/Fundamental_Initial/build",
+  "command": "/usr/bin/g++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DSRCDIR=/home/moha/Fundamental_Initial -isystem /usr/share/Imagine++/include -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -isystem /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -g -fPIC -o CMakeFiles/Fundamental.dir/Imagine/SIFT_VL.cpp.o -c /home/moha/Fundamental_Initial/Imagine/SIFT_VL.cpp",
+  "file": "/home/moha/Fundamental_Initial/Imagine/SIFT_VL.cpp"
+},
+{
+  "directory": "/home/moha/Fundamental_Initial/build",
+  "command": "/usr/bin/gcc -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DSRCDIR=/home/moha/Fundamental_Initial -isystem /usr/share/Imagine++/include -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -isystem /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -g -fPIC -o CMakeFiles/Fundamental.dir/Imagine/vl/generic.c.o -c /home/moha/Fundamental_Initial/Imagine/vl/generic.c",
+  "file": "/home/moha/Fundamental_Initial/Imagine/vl/generic.c"
+},
+{
+  "directory": "/home/moha/Fundamental_Initial/build",
+  "command": "/usr/bin/gcc -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DSRCDIR=/home/moha/Fundamental_Initial -isystem /usr/share/Imagine++/include -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -isystem /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -g -fPIC -o CMakeFiles/Fundamental.dir/Imagine/vl/host.c.o -c /home/moha/Fundamental_Initial/Imagine/vl/host.c",
+  "file": "/home/moha/Fundamental_Initial/Imagine/vl/host.c"
+},
+{
+  "directory": "/home/moha/Fundamental_Initial/build",
+  "command": "/usr/bin/gcc -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DSRCDIR=/home/moha/Fundamental_Initial -isystem /usr/share/Imagine++/include -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -isystem /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -g -fPIC -o CMakeFiles/Fundamental.dir/Imagine/vl/imop.c.o -c /home/moha/Fundamental_Initial/Imagine/vl/imop.c",
+  "file": "/home/moha/Fundamental_Initial/Imagine/vl/imop.c"
+},
+{
+  "directory": "/home/moha/Fundamental_Initial/build",
+  "command": "/usr/bin/gcc -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DSRCDIR=/home/moha/Fundamental_Initial -isystem /usr/share/Imagine++/include -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -isystem /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -g -fPIC -o CMakeFiles/Fundamental.dir/Imagine/vl/sift.c.o -c /home/moha/Fundamental_Initial/Imagine/vl/sift.c",
+  "file": "/home/moha/Fundamental_Initial/Imagine/vl/sift.c"
+}
+]

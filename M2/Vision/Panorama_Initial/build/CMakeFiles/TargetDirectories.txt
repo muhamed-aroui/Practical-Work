@@ -1,0 +1,3 @@
+/home/moha/Panorama_Initial/build/CMakeFiles/Panorama.dir
+/home/moha/Panorama_Initial/build/CMakeFiles/edit_cache.dir
+/home/moha/Panorama_Initial/build/CMakeFiles/rebuild_cache.dir

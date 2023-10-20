@@ -1,0 +1,3 @@
+/home/moha/Fundamental_Initial/build/CMakeFiles/Fundamental.dir
+/home/moha/Fundamental_Initial/build/CMakeFiles/edit_cache.dir
+/home/moha/Fundamental_Initial/build/CMakeFiles/rebuild_cache.dir

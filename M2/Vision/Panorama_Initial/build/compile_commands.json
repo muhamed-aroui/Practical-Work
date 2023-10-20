@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/home/moha/Panorama_Initial/build",
+  "command": "/usr/bin/g++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DSRCDIR=/home/moha/Panorama_Initial -isystem /usr/share/Imagine++/include -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -isystem /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -g -fPIC -o CMakeFiles/Panorama.dir/Panorama.cpp.o -c /home/moha/Panorama_Initial/Panorama.cpp",
+  "file": "/home/moha/Panorama_Initial/Panorama.cpp"
+}
+]
