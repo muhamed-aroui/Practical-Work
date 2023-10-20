@@ -1,0 +1,3 @@
+/home/moha/gitrep/Practical-Work/M2/Vision/Seeds_Initial/build/CMakeFiles/Seeds.dir
+/home/moha/gitrep/Practical-Work/M2/Vision/Seeds_Initial/build/CMakeFiles/edit_cache.dir
+/home/moha/gitrep/Practical-Work/M2/Vision/Seeds_Initial/build/CMakeFiles/rebuild_cache.dir

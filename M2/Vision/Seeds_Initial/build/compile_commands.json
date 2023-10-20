@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/home/moha/gitrep/Practical-Work/M2/Vision/Seeds_Initial/build",
+  "command": "/usr/bin/g++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DSRCDIR=/home/moha/gitrep/Practical-Work/M2/Vision/Seeds_Initial -isystem /usr/share/Imagine++/include -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -isystem /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -g -fPIC -std=gnu++11 -o CMakeFiles/Seeds.dir/Seeds.cpp.o -c /home/moha/gitrep/Practical-Work/M2/Vision/Seeds_Initial/Seeds.cpp",
+  "file": "/home/moha/gitrep/Practical-Work/M2/Vision/Seeds_Initial/Seeds.cpp"
+}
+]
