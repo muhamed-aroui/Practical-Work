@@ -11,7 +11,7 @@ using namespace Imagine;
 using namespace std;
 
 // Default data
-const char *DEF_im1=srcPath("im1.jpg"), *DEF_im2=srcPath("im2.jpg");
+const char *DEF_im1=srcPath("t1.png"), *DEF_im2=srcPath("t2.png");
 static int dmin=-30, dmax=-7; // Min and max disparities
 
 /// Min NCC for a seed
@@ -101,8 +101,8 @@ static float correl(const Image<byte>& im1, int i1,int j1,float m1,
     float varim1 = 0.0f;
     float varim2 = 0.0f;
 
-    for (int y= -win; y<= win;y++) {
-        for(int x = -win; x<=win;x++) {
+    for (int x= -win; x<= win;x++) {
+        for(int y = -win; y<=win;y++) {
 
             float diff1 = im1(i1+x,j1+y) - m1;
             float diff2 = im2(i2+x,j2+y) - m2;
@@ -114,7 +114,7 @@ static float correl(const Image<byte>& im1, int i1,int j1,float m1,
         }
     }
 
-    dist = numerator / (sqrt(varim1) * sqrt(varim2 + EPS));
+    dist = numerator / (sqrt(varim1) * sqrt(varim2 )+ EPS);
     return dist;
 }
 
@@ -125,7 +125,7 @@ static float sum(const Image<byte>& im, int i, int j) {
     for (int x=-win;x<=win;x++) {
         for (int y=-win;y<=win;y++) {
             // Ensure that the pixel coordinates are within the bounds of the image
-            if (i+x>=0 && i+x<im.height() && j+y>=0 && j+y<im.width()) {
+            if (i+x>=0 && i+x<im.width() && j+y>=0 && j+y<im.height()) {
                 s+= im(i+x,j+y);
             }
 
@@ -164,12 +164,12 @@ static void find_seeds(Image<byte> im1, Image<byte> im2,
             // Hint: just ignore windows that are not fully in image
             float ncc;
             float Best_disparity;
-            float Max_ncc=-1.0f;
+            float Max_ncc=0.0f;
 
             // Loop through the disparity range
             for (int disparity = dmin; disparity <= dmax;disparity++) {
                 // Check if the window is fully within the image boundaries for the current disparity
-                if (x + disparity -win<0 || x+disparity-win>=im2.height()) {continue;}
+                if (x + disparity -win<=0 || x+disparity+win>=im2.width()) {continue;}
                 ncc = ccorrel(im1,x,y,im2,x+disparity,y);
                 if (ncc>Max_ncc) {
                     Max_ncc=ncc;
@@ -188,6 +188,7 @@ static void find_seeds(Image<byte> im1, Image<byte> im2,
     std::cout << std::endl;
 }
 
+
 /// Propagate seeds
 static void propagate(Image<byte> im1, Image<byte> im2,
                       Image<int>& disp, Image<bool>& seeds,
@@ -204,13 +205,13 @@ static void propagate(Image<byte> im1, Image<byte> im2,
                 float bestDisparity,ncc;
                 float Max_ncc=-1.0;
                 for (int disparity =s.d -1 ;disparity<=s.d+1;disparity++) {
-                    if (x + disparity -win<0 || x+disparity-win>=im2.height()) {continue;}
+                    if (x + disparity -win<0 || x+disparity+win>=im2.width()) {continue;}
                     ncc=ccorrel(im1,x,y,im2,x+disparity,y);
                     if (ncc>Max_ncc){
                         Max_ncc=ncc;
                         bestDisparity=disparity;
                     }
-                    
+
                     bestDisparity=(bestDisparity<dmin) ? dmin : (bestDisparity>dmax) ? dmax : bestDisparity;
 
                     disp(x,y)=bestDisparity;
@@ -224,7 +225,6 @@ static void propagate(Image<byte> im1, Image<byte> im2,
         }
     }
 }
-
 int main(int argc, char* argv[]) {
     if(argc!=1 && argc!=5) {
         cerr << "Usage: " << argv[0] << " im1 im2 dmin dmax" << endl;
@@ -254,15 +254,15 @@ int main(int argc, char* argv[]) {
 
     // Dense disparity
     find_seeds(I1, I2, -1.0f, disp, seeds, Q);
-    save(displayDisp(disp,W,2), srcPath("0dense.png"));
+    save(displayDisp(disp,W,2), srcPath("0dense_2.png"));
 
     // Only seeds
     find_seeds(I1, I2, nccSeed, disp, seeds, Q);
-    save(displayDisp(disp,W,3), srcPath("1seeds.png"));
+    save(displayDisp(disp,W,3), srcPath("1seeds_2.png"));
 
     // Propagation of seeds
     propagate(I1, I2, disp, seeds, Q);
-    save(displayDisp(disp,W,4), srcPath("2final.png"));
+    save(displayDisp(disp,W,4), srcPath("2final_2.png"));
 
     // Show 3D (use shift click to animate)
     show3D(I1,disp);
