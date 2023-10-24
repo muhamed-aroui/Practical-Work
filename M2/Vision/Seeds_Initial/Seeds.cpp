@@ -11,7 +11,7 @@ using namespace Imagine;
 using namespace std;
 
 // Default data
-const char *DEF_im1=srcPath("t1.png"), *DEF_im2=srcPath("t2.png");
+const char *DEF_im1=srcPath("im1.jpg"), *DEF_im2=srcPath("img2.jpg");
 static int dmin=-30, dmax=-7; // Min and max disparities
 
 /// Min NCC for a seed
@@ -100,21 +100,16 @@ static float correl(const Image<byte>& im1, int i1,int j1,float m1,
     float numerator= 0.0f;
     float varim1 = 0.0f;
     float varim2 = 0.0f;
-
     for (int x= -win; x<= win;x++) {
         for(int y = -win; y<=win;y++) {
-
             float diff1 = im1(i1+x,j1+y) - m1;
             float diff2 = im2(i2+x,j2+y) - m2;
-
             numerator += diff1 * diff2;
-
             varim1 += diff1 * diff1;
             varim2 += diff2 * diff2;
         }
     }
-
-    dist = numerator / (sqrt(varim1) * sqrt(varim2 )+ EPS);
+    dist = numerator / (sqrt(varim1) * sqrt(varim2) + EPS);
     return dist;
 }
 
@@ -128,7 +123,6 @@ static float sum(const Image<byte>& im, int i, int j) {
             if (i+x>=0 && i+x<im.width() && j+y>=0 && j+y<im.height()) {
                 s+= im(i+x,j+y);
             }
-
         }
     }
     return s;
@@ -165,7 +159,6 @@ static void find_seeds(Image<byte> im1, Image<byte> im2,
             float ncc;
             float Best_disparity;
             float Max_ncc=0.0f;
-
             // Loop through the disparity range
             for (int disparity = dmin; disparity <= dmax;disparity++) {
                 // Check if the window is fully within the image boundaries for the current disparity
@@ -176,13 +169,11 @@ static void find_seeds(Image<byte> im1, Image<byte> im2,
                     Best_disparity=disparity;
                 }     
             }
-
             if (Max_ncc> nccSeed){
                         disp(x,y)=Best_disparity;
                         seeds(x,y)=true;
                         Q.push(Seed(x,y,Best_disparity,Max_ncc));
                     }
-
         }
     }
     std::cout << std::endl;
@@ -211,12 +202,9 @@ static void propagate(Image<byte> im1, Image<byte> im2,
                         Max_ncc=ncc;
                         bestDisparity=disparity;
                     }
-
                     bestDisparity=(bestDisparity<dmin) ? dmin : (bestDisparity>dmax) ? dmax : bestDisparity;
-
                     disp(x,y)=bestDisparity;
                     seeds(x,y)=true;
-
                     Q.push(Seed(x,y,bestDisparity,Max_ncc));
 
                 }
@@ -254,15 +242,15 @@ int main(int argc, char* argv[]) {
 
     // Dense disparity
     find_seeds(I1, I2, -1.0f, disp, seeds, Q);
-    save(displayDisp(disp,W,2), srcPath("0dense_2.png"));
+    save(displayDisp(disp,W,2), srcPath("0dense.png"));
 
     // Only seeds
     find_seeds(I1, I2, nccSeed, disp, seeds, Q);
-    save(displayDisp(disp,W,3), srcPath("1seeds_2.png"));
+    save(displayDisp(disp,W,3), srcPath("1seeds.png"));
 
     // Propagation of seeds
     propagate(I1, I2, disp, seeds, Q);
-    save(displayDisp(disp,W,4), srcPath("2final_2.png"));
+    save(displayDisp(disp,W,4), srcPath("2final.png"));
 
     // Show 3D (use shift click to animate)
     show3D(I1,disp);
