@@ -1,0 +1,22 @@
+[
+{
+  "directory": "/home/moha/gitrep/Practical-Work/M2/Vision/GCDisparity_Initial/build",
+  "command": "/usr/bin/g++ -g -std=gnu++11 -o CMakeFiles/exampleGC.dir/exampleGC.cpp.o -c /home/moha/gitrep/Practical-Work/M2/Vision/GCDisparity_Initial/exampleGC.cpp",
+  "file": "/home/moha/gitrep/Practical-Work/M2/Vision/GCDisparity_Initial/exampleGC.cpp"
+},
+{
+  "directory": "/home/moha/gitrep/Practical-Work/M2/Vision/GCDisparity_Initial/build",
+  "command": "/usr/bin/g++ -g -std=gnu++11 -o CMakeFiles/exampleGC.dir/maxflow/graph.cpp.o -c /home/moha/gitrep/Practical-Work/M2/Vision/GCDisparity_Initial/maxflow/graph.cpp",
+  "file": "/home/moha/gitrep/Practical-Work/M2/Vision/GCDisparity_Initial/maxflow/graph.cpp"
+},
+{
+  "directory": "/home/moha/gitrep/Practical-Work/M2/Vision/GCDisparity_Initial/build",
+  "command": "/usr/bin/g++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DSRCDIR=/home/moha/gitrep/Practical-Work/M2/Vision/GCDisparity_Initial -isystem /usr/share/Imagine++/include -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -isystem /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -g -fPIC -std=gnu++11 -o CMakeFiles/GCDisparity.dir/GCDisparity.cpp.o -c /home/moha/gitrep/Practical-Work/M2/Vision/GCDisparity_Initial/GCDisparity.cpp",
+  "file": "/home/moha/gitrep/Practical-Work/M2/Vision/GCDisparity_Initial/GCDisparity.cpp"
+},
+{
+  "directory": "/home/moha/gitrep/Practical-Work/M2/Vision/GCDisparity_Initial/build",
+  "command": "/usr/bin/g++ -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DSRCDIR=/home/moha/gitrep/Practical-Work/M2/Vision/GCDisparity_Initial -isystem /usr/share/Imagine++/include -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -isystem /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -g -fPIC -std=gnu++11 -o CMakeFiles/GCDisparity.dir/maxflow/graph.cpp.o -c /home/moha/gitrep/Practical-Work/M2/Vision/GCDisparity_Initial/maxflow/graph.cpp",
+  "file": "/home/moha/gitrep/Practical-Work/M2/Vision/GCDisparity_Initial/maxflow/graph.cpp"
+}
+]
