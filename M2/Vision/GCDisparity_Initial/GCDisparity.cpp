@@ -173,6 +173,11 @@ double zncc(const byteImage& I1,    // Image 1
     return correl(I1, I1M, I2, I2M, u1, v1, u2, v2) / sqrt(var1 * var2);
 }
 
+// Node number for pixel (x,y) at disparity d
+int nodeNum(int x, int y, int d, int nx, int ny) {
+  return x + y*nx + d*nx*ny;
+}
+
 /// Create graph
 /// The graph library works with node numbers. To clarify the setting, create
 /// a formula to associate a unique node number to a triplet (x,y,d) of pixel
@@ -192,41 +197,45 @@ void build_graph(Graph<int,int,int>& G,
     G.add_node(nx*ny*nd);
     int kp= 1+(nd-1)*4*lambda;
 
-    for (int y=0;y<ny; y++){
-        for (int x=0;x<nx;x++){
+    for (int x=0;x<nx; x++){
+        for (int y=0;y<ny;y++){
             for (int d=0;d<nd;d++){
                 // Node number for the cuurent triplet
-                int node = x + y * nx; //+ d * nx * ny;
-                int originalX = win + zoom * x;
-                int originalY= win + zoom * y;
+                int node = nodeNum(x,y,d,nx,ny) ; //+ d * nx * ny;
+                //int layer_1_ind = x + y * nx;
+                //int layer_k_ind = x + y * nx + (d-1) * nx*ny; 
+                //int originalX = win + zoom * x;
+                //int originalY= win + zoom * y;
                 int u1 = win + zoom * x;int v1 = win + zoom * y;
-                int u2=u1 +dmin;int v2 = v1;
-                double Dp_source = wcc * min(1.,zncc(I1,I1M,I2,I2M,u1,v1,u2,v2));
-                u2 = u1 + dmax;
-                double Dp_sink = wcc * min(1.,zncc(I1,I1M,I2,I2M,u1,v1,u2,v2));
-                G.add_tweights(node, Dp_source+kp, 0);
-                G.add_tweights(node, 0, Dp_sink+kp);
+                int u2=u1 + dmin;int v2 = v1;
+                //double Dp_source = wcc * min(1.,zncc(I1,I1M,I2,I2M,u1,v1,u2,v2));
+                //u2 = u1 + dmax;
+                //double Dp_sink = wcc * min(1.,zncc(I1,I1M,I2,I2M,u1,v1,u2,v2));
+                //G.add_tweights(layer_1_ind, Dp_source+kp, 0);
+                //G.add_tweights(layer_k_ind, 0, Dp_sink+kp);
 
                 if (d == 0){
-                    G.add_tweights(node, INF, 0); //Source
-                    G.add_tweights(node,0,INF);
+                    double Dp_source = wcc * min(1.,zncc(I1,I1M,I2,I2M,u1,v1,u2,v2));
+                    G.add_tweights(node, (int) Dp_source + kp, 0); //Source
                 }else if (d == nd -1)
                 {
-                    /* code */
-                }else{
-                    if (x > 0){
-                        G.add_edge(node, x-1 + y * nx + d * nx * ny,lambda,0);
-                    }
-                    if (y > 0){
-                        G.add_edge(node, x + (y-1) * nx + d * nx * ny,lambda,0);
-                    }
-                    if (d > 0){
-                        G.add_edge(node, x + y * nx + (d-1) * nx * ny,lambda*abs(d-d-1),0);
-                    }
-                    if(d<nd-1){
-                        G.add_edge(node, x-1 + y * nx + (d+1) * nx * ny, lambda*abs(d-d-1), 0);
-                    }
+                    u2 = u1 + dmax;
+                    double Dp_sink = wcc * min(1.,zncc(I1,I1M,I2,I2M,u1,v1,u2,v2));
+                    G.add_tweights(node, 0, (int)Dp_sink + kp); //Sink
                 }
+                if (d < nd-1){
+                    u2 = u1 +dmin+d;
+                    double Dp_layer = wcc * min(1.,zncc(I1,I1M,I2,I2M,u1,v1,u2,v2));
+                    G.add_edge(node,nodeNum(x,y,d+1,nx,ny),(int)Dp_layer+kp,0);
+                }
+                // Connect with buttom neighbors 
+                if (x<nx-1){
+                    G.add_edge(node,nodeNum(x+1,y,d,nx,ny),lambda,lambda);
+                }
+                if (y<ny-1){
+                    G.add_edge(node,nodeNum(x,y+1,d,nx,ny),lambda,lambda);
+                }
+                
 
             }
         }
@@ -238,10 +247,16 @@ doubleImage decode_graph(Graph<int,int,int>& G, int nx, int ny, int nd) {
     doubleImage D(nx,ny);
     // ------------- TODO -------------
     // The following is dummy code, replace by your own
-    for(int y=0; y<ny; y++)
-        for(int x=0; x<nx; x++) {
-            int n = x + y * nx + dmin * nx * ny;
-            D(x,y) = G.what_segment(n) == Graph<int,int,int>::SOURCE ? dmin :dmax; //(dmax+dmin)/2+nd*(x>y? 1:-1)/2;
+    for(int x=0; x<nx; x++)
+        for(int y=0; y<ny; y++) {
+            D(x,y) = -1; 
+            for (int d=0; d<nd; d++){
+                int n = nodeNum(x,y,d,nx,ny);
+                if (G.what_segment(n) == Graph<int,int,int>::SINK){
+                    D(x,y) = dmin +d;
+                    break;
+                }
+            }
         }
     return D;
 }
