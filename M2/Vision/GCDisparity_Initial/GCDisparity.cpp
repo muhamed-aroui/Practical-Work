@@ -16,7 +16,7 @@ typedef Image<double> doubleImage;
 
 // Default data
 const char *DEF_im1=srcPath("face0.png"), *DEF_im2=srcPath("face1.png");
-static int dmin=10, dmax=55; // Min and max disparities
+static int dmin=7, dmax=30; // Min and max disparities
 
 // Parameters of the algorithm
 // OPTIMIZATION: to make the program faster, a zoom factor is used to
@@ -217,7 +217,8 @@ void build_graph(Graph<int,int,int>& G,
                 if (d == 0){
                     double Dp_source = wcc * min(1.,zncc(I1,I1M,I2,I2M,u1,v1,u2,v2));
                     G.add_tweights(node, (int) Dp_source + kp, 0); //Source
-                }else if (d == nd -1)
+                }
+                if (d == nd -1)
                 {
                     u2 = u1 + dmax;
                     double Dp_sink = wcc * min(1.,zncc(I1,I1M,I2,I2M,u1,v1,u2,v2));
