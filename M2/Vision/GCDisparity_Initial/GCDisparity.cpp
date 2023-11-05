@@ -198,36 +198,73 @@ void build_graph(Graph<int,int,int>& G,
     int kp= 1+(nd-1)*4*lambda;
 
     for (int x=0;x<nx; x++){
+        int u1 = win + zoom * x;
         for (int y=0;y<ny;y++){
+            int v1 = win + zoom * y;
             for (int d=0;d<nd;d++){
+                //std::cout << "x: " << x << ", y: " << y << ", d: " << d << std::endl;
                 // Node number for the cuurent triplet
-                int node = nodeNum(x,y,d,nx,ny) ; //+ d * nx * ny;
-                //int layer_1_ind = x + y * nx;
-                //int layer_k_ind = x + y * nx + (d-1) * nx*ny; 
-                //int originalX = win + zoom * x;
-                //int originalY= win + zoom * y;
-                int u1 = win + zoom * x;int v1 = win + zoom * y;
+                int node = nodeNum(x,y,d,nx,ny) ;
                 int u2=u1 + dmin;int v2 = v1;
-                //double Dp_source = wcc * min(1.,zncc(I1,I1M,I2,I2M,u1,v1,u2,v2));
-                //u2 = u1 + dmax;
-                //double Dp_sink = wcc * min(1.,zncc(I1,I1M,I2,I2M,u1,v1,u2,v2));
-                //G.add_tweights(layer_1_ind, Dp_source+kp, 0);
-                //G.add_tweights(layer_k_ind, 0, Dp_sink+kp);
-
                 if (d == 0){
-                    double Dp_source = wcc * min(1.,zncc(I1,I1M,I2,I2M,u1,v1,u2,v2));
-                    G.add_tweights(node, (int) Dp_source + kp, 0); //Source
+                    if(u1+dmin+d+win>=I2.width()){
+                        G.add_tweights(node, INF, 0);
+                    }else{
+                        if (x==239 && y==11 && d==21){
+                        
+                        std::cout << "I2.width()"<< I2.width()<< std::endl;
+                        std::cout << "cond:"<< u1+dmax+win<< std::endl;
+                        std::cout << "here0 be"<< std::endl;
+                    }
+                        double Dp_source = wcc * min(1.,sqrt(1-zncc(I1,I1M,I2,I2M,u1,v1,u2,v2)));
+                        if (x==239 && y==11 && d==21){
+                        
+                        std::cout << "I2.width()"<< I2.width()<< std::endl;
+                        std::cout << "cond:"<< u1+dmax+win<< std::endl;
+                        std::cout << "here0 af"<< std::endl;
+                    }
+                        G.add_tweights(node, (int) Dp_source + kp, 0); //Source
+                    }
+                    
                 }
-                if (d == nd -1)
+                if (d == nd - 1)
                 {
-                    u2 = u1 + dmax;
-                    double Dp_sink = wcc * min(1.,zncc(I1,I1M,I2,I2M,u1,v1,u2,v2));
-                    G.add_tweights(node, 0, (int)Dp_sink + kp); //Sink
+                    if (u1+dmax+win >= I2.width()){
+                        if (x==238 && y==11 && d==22){
+                        
+                        std::cout << "I2.width()"<< I2.width()<< std::endl;
+                        std::cout << "cond:"<< u1+dmax+win<< std::endl;
+                        std::cout << "here af"<< std::endl;
+                    }
+                       G.add_tweights(node, 0, INF);//Sink 
+                    }else{
+                        if (x==239 && y==11 && d==21){
+                        
+                        std::cout << "I2.width()"<< I2.width()<< std::endl;
+                        std::cout << "cond:"<< u1+dmax+win<< std::endl;
+                        std::cout << "here be"<< std::endl;
+                    }
+                        u2 = u1 + dmax;
+                        double Dp_sink = wcc * min(1.,sqrt(1-zncc(I1,I1M,I2,I2M,u1,v1,u2,v2)));
+                        if (x==238 && y==11 && d==22){
+                        
+                        std::cout << "I2.width()"<< I2.width()<< std::endl;
+                        std::cout << "cond:"<< u1+dmax+win<< std::endl;
+                        std::cout << "here be"<< std::endl;
+                    }
+                        G.add_tweights(node, 0, (int)Dp_sink + kp); //Sink
+                    }
+                    
+                    
                 }
                 if (d < nd-1){
-                    u2 = u1 +dmin+d;
-                    double Dp_layer = wcc * min(1.,zncc(I1,I1M,I2,I2M,u1,v1,u2,v2));
-                    G.add_edge(node,nodeNum(x,y,d+1,nx,ny),(int)Dp_layer+kp,0);
+                    if (u1+dmin+d+win>=I2.width()){
+                        G.add_edge(node,nodeNum(x,y,d+1,nx,ny),INF,0);
+                    }else{
+                        u2 = u1 +dmin+d;
+                        double Dp_layer = wcc * min(1.,sqrt(1-zncc(I1,I1M,I2,I2M,u1,v1,u2,v2)));
+                        G.add_edge(node,nodeNum(x,y,d+1,nx,ny),(int)Dp_layer+kp,0);
+                    }
                 }
                 // Connect with buttom neighbors 
                 if (x<nx-1){
