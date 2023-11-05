@@ -188,6 +188,49 @@ void build_graph(Graph<int,int,int>& G,
     doubleImage I1M = meanImage(I1), I2M = meanImage(I2);
 
     // ------------- TODO -------------
+    //add nodes
+    G.add_node(nx*ny*nd);
+    int kp= 1+(nd-1)*4*lambda;
+
+    for (int y=0;y<ny; y++){
+        for (int x=0;x<nx;x++){
+            for (int d=0;d<nd;d++){
+                // Node number for the cuurent triplet
+                int node = x + y * nx; //+ d * nx * ny;
+                int originalX = win + zoom * x;
+                int originalY= win + zoom * y;
+                int u1 = win + zoom * x;int v1 = win + zoom * y;
+                int u2=u1 +dmin;int v2 = v1;
+                double Dp_source = wcc * min(1.,zncc(I1,I1M,I2,I2M,u1,v1,u2,v2));
+                u2 = u1 + dmax;
+                double Dp_sink = wcc * min(1.,zncc(I1,I1M,I2,I2M,u1,v1,u2,v2));
+                G.add_tweights(node, Dp_source+kp, 0);
+                G.add_tweights(node, 0, Dp_sink+kp);
+
+                if (d == 0){
+                    G.add_tweights(node, INF, 0); //Source
+                    G.add_tweights(node,0,INF);
+                }else if (d == nd -1)
+                {
+                    /* code */
+                }else{
+                    if (x > 0){
+                        G.add_edge(node, x-1 + y * nx + d * nx * ny,lambda,0);
+                    }
+                    if (y > 0){
+                        G.add_edge(node, x + (y-1) * nx + d * nx * ny,lambda,0);
+                    }
+                    if (d > 0){
+                        G.add_edge(node, x + y * nx + (d-1) * nx * ny,lambda*abs(d-d-1),0);
+                    }
+                    if(d<nd-1){
+                        G.add_edge(node, x-1 + y * nx + (d+1) * nx * ny, lambda*abs(d-d-1), 0);
+                    }
+                }
+
+            }
+        }
+    }
 }
 
 /// Extract disparity from minimum cut
@@ -197,7 +240,8 @@ doubleImage decode_graph(Graph<int,int,int>& G, int nx, int ny, int nd) {
     // The following is dummy code, replace by your own
     for(int y=0; y<ny; y++)
         for(int x=0; x<nx; x++) {
-            D(x,y) = (dmax+dmin)/2+nd*(x>y? 1:-1)/2;
+            int n = x + y * nx + dmin * nx * ny;
+            D(x,y) = G.what_segment(n) == Graph<int,int,int>::SOURCE ? dmin :dmax; //(dmax+dmin)/2+nd*(x>y? 1:-1)/2;
         }
     return D;
 }
