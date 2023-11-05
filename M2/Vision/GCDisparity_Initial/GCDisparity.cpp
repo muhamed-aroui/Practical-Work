@@ -210,19 +210,7 @@ void build_graph(Graph<int,int,int>& G,
                     if(u1+dmin+d+win>=I2.width()){
                         G.add_tweights(node, INF, 0);
                     }else{
-                        if (x==239 && y==11 && d==21){
-                        
-                        std::cout << "I2.width()"<< I2.width()<< std::endl;
-                        std::cout << "cond:"<< u1+dmax+win<< std::endl;
-                        std::cout << "here0 be"<< std::endl;
-                    }
                         double Dp_source = wcc * min(1.,sqrt(1-zncc(I1,I1M,I2,I2M,u1,v1,u2,v2)));
-                        if (x==239 && y==11 && d==21){
-                        
-                        std::cout << "I2.width()"<< I2.width()<< std::endl;
-                        std::cout << "cond:"<< u1+dmax+win<< std::endl;
-                        std::cout << "here0 af"<< std::endl;
-                    }
                         G.add_tweights(node, (int) Dp_source + kp, 0); //Source
                     }
                     
@@ -230,28 +218,10 @@ void build_graph(Graph<int,int,int>& G,
                 if (d == nd - 1)
                 {
                     if (u1+dmax+win >= I2.width()){
-                        if (x==238 && y==11 && d==22){
-                        
-                        std::cout << "I2.width()"<< I2.width()<< std::endl;
-                        std::cout << "cond:"<< u1+dmax+win<< std::endl;
-                        std::cout << "here af"<< std::endl;
-                    }
                        G.add_tweights(node, 0, INF);//Sink 
                     }else{
-                        if (x==239 && y==11 && d==21){
-                        
-                        std::cout << "I2.width()"<< I2.width()<< std::endl;
-                        std::cout << "cond:"<< u1+dmax+win<< std::endl;
-                        std::cout << "here be"<< std::endl;
-                    }
                         u2 = u1 + dmax;
                         double Dp_sink = wcc * min(1.,sqrt(1-zncc(I1,I1M,I2,I2M,u1,v1,u2,v2)));
-                        if (x==238 && y==11 && d==22){
-                        
-                        std::cout << "I2.width()"<< I2.width()<< std::endl;
-                        std::cout << "cond:"<< u1+dmax+win<< std::endl;
-                        std::cout << "here be"<< std::endl;
-                    }
                         G.add_tweights(node, 0, (int)Dp_sink + kp); //Sink
                     }
                     
