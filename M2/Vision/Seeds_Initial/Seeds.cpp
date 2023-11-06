@@ -11,8 +11,9 @@ using namespace Imagine;
 using namespace std;
 
 // Default data
-const char *DEF_im1=srcPath("im1.jpg"), *DEF_im2=srcPath("im2.jpg");
-static int dmin=-30, dmax=-7; // Min and max disparities
+const char *DEF_im1=srcPath("face0.png"), *DEF_im2=srcPath("face1.png");
+//static int dmin=-30, dmax=-7; // Min and max disparities
+static int dmin=-55, dmax=-10; // Min and max disparities
 
 /// Min NCC for a seed
 static const float nccSeed=0.95f;
