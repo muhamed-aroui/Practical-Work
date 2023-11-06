@@ -22,7 +22,7 @@ static int dmin=10, dmax=55; // Min and max disparities
 // OPTIMIZATION: to make the program faster, a zoom factor is used to
 // down-sample the input images on the fly. You will
 // only look at pixels (win+zoom*i,win+zoom*j) with win the radius of patch.
-const int win = (7-1)/2;    // Correlation patches of size (2n+1)*(2n+1)
+const int win =3;// (7-1)/2;    // Correlation patches of size (2n+1)*(2n+1)
 const float lambdaf = 0.1;  // Weight of regularization (smoothing) term
 const int zoom = 2;         // Zoom factor (to speedup computations)
 const float sigma = 6/zoom; // Gaussian blur parameter for disparity
@@ -174,8 +174,8 @@ double zncc(const byteImage& I1,    // Image 1
 }
 
 // Node number for pixel (x,y) at disparity d
-int nodeNum(int x, int y, int d, int nx, int ny) {
-  return x + y*nx + d*nx*ny;
+int nodeNum(int x, int y, int d, int nx, int ny){
+    return x + y * nx + d * nx * ny;
 }
 
 /// Create graph
@@ -193,58 +193,57 @@ void build_graph(Graph<int,int,int>& G,
     doubleImage I1M = meanImage(I1), I2M = meanImage(I2);
 
     // ------------- TODO -------------
-    //add nodes
-    G.add_node(nx*ny*nd);
-    int kp= 1+(nd-1)*4*lambda;
-
-    for (int x=0;x<nx; x++){
+    // add nodes
+    G.add_node(nx * ny * nd);
+    int kp = 1 + (nd - 1) * 4 * lambda;
+    for (int x = 0; x < nx; x++){
         int u1 = win + zoom * x;
-        for (int y=0;y<ny;y++){
+        for (int y = 0; y < ny; y++){
             int v1 = win + zoom * y;
-            for (int d=0;d<nd;d++){
-                //std::cout << "x: " << x << ", y: " << y << ", d: " << d << std::endl;
+            for (int d = 0; d < nd; d++){
                 // Node number for the cuurent triplet
-                int node = nodeNum(x,y,d,nx,ny) ;
-                int u2=u1 + dmin;int v2 = v1;
+                int node = nodeNum(x, y, d, nx, ny);
+                int u2 = u1 + dmin;
+                int v2 = v1;
+                // Source
                 if (d == 0){
-                    if(u2+win>=I2.width()){
+                    if (u2 + win >= I2.width()){
                         G.add_tweights(node, INF, 0);
-                    }else{
-                        double Dp_source = wcc * min(1.,sqrt(1-zncc(I1,I1M,I2,I2M,u1,v1,u2,v2)));
-                        G.add_tweights(node, (int) Dp_source + kp, 0); //Source
                     }
-                    
-                }
-                if (d == nd - 1)
-                {
-                    if (u1+dmax+win >= I2.width()){
-                       G.add_tweights(node, 0, INF);//Sink 
-                    }else{
-                        u2 = u1 + dmax;
-                        double Dp_sink = wcc * min(1.,sqrt(1-zncc(I1,I1M,I2,I2M,u1,v1,u2,v2)));
-                        G.add_tweights(node, 0, (int)Dp_sink + kp); //Sink
-                    }
-                    
-                    
-                }
-                if (d < nd-1){
-                    if (u1+dmin+d+win>=I2.width()){
-                        G.add_edge(node,nodeNum(x,y,d+1,nx,ny),INF,0);
-                    }else{
-                        u2 = u1 +dmin+d;
-                        double Dp_layer = wcc * min(1.,sqrt(1-zncc(I1,I1M,I2,I2M,u1,v1,u2,v2)));
-                        G.add_edge(node,nodeNum(x,y,d+1,nx,ny),(int)Dp_layer+kp,0);
+                    else{
+                        float Dp_source = wcc * min(1., sqrt(1 - zncc(I1, I1M, I2, I2M, u1, v1, u2, v2)));
+                        G.add_tweights(node, Dp_source + kp, 0);
                     }
                 }
-                // Connect with buttom neighbors 
-                if (x<nx-1){
-                    G.add_edge(node,nodeNum(x+1,y,d,nx,ny),lambda,lambda);
+                // Sink
+                if (d == nd - 1){
+                    u2 = u1 + dmax;
+                    if (u2 + win >= I2.width()){
+                        G.add_tweights(node, 0, INF);
+                    }
+                    else{
+                        float Dp_sink = wcc * min(1., sqrt(1 - zncc(I1, I1M, I2, I2M, u1, v1, u2, v2)));
+                        G.add_tweights(node, 0, Dp_sink + kp);
+                    }
                 }
-                if (y<ny-1){
-                    G.add_edge(node,nodeNum(x,y+1,d,nx,ny),lambda,lambda);
+                // other layers
+                if (d < nd - 1){
+                    u2 = u1 + dmin + d;
+                    if (u2 + win >= I2.width()){
+                        G.add_edge(node, nodeNum(x, y, d + 1, nx, ny), INF, 0);
+                    }
+                    else{
+                        float Dp_layer = wcc * min(1., sqrt(1 - zncc(I1, I1M, I2, I2M, u1, v1, u2, v2)));
+                        G.add_edge(node, nodeNum(x, y, d + 1, nx, ny), Dp_layer + kp, 0);
+                    }
                 }
-                
-
+                // Connect with neighbors
+                if (x < nx - 1){
+                    G.add_edge(node, nodeNum(x + 1, y, d, nx, ny), lambda, lambda);
+                }
+                if (y < ny - 1){
+                    G.add_edge(node, nodeNum(x, y + 1, d, nx, ny), lambda, lambda);
+                }
             }
         }
     }
@@ -255,14 +254,13 @@ doubleImage decode_graph(Graph<int,int,int>& G, int nx, int ny, int nd) {
     doubleImage D(nx,ny);
     // ------------- TODO -------------
     // The following is dummy code, replace by your own
-    for(int x=0; x<nx; x++)
-        for(int y=0; y<ny; y++) {
-            D(x,y) = -1;
-            for (int d=0; d<nd; d++){
-                int n = nodeNum(x,y,d,nx,ny);
-                
-                if (G.what_segment(n) == Graph<int,int,int>::SINK){
-                    D(x,y) = dmin +d;
+    for (int x = 0; x < nx; x++)
+        for (int y = 0; y < ny; y++){
+            D(x, y) = -1;
+            for (int d = 0; d < nd; d++){
+                int n = nodeNum(x, y, d, nx, ny);
+                if (G.what_segment(n) == Graph<int, int, int>::SINK){
+                    D(x, y) = dmin + d;
                     break;
                 }
             }
