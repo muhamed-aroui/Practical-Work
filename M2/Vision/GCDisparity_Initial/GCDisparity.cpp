@@ -22,7 +22,7 @@ static int dmin=10, dmax=55; // Min and max disparities
 // OPTIMIZATION: to make the program faster, a zoom factor is used to
 // down-sample the input images on the fly. You will
 // only look at pixels (win+zoom*i,win+zoom*j) with win the radius of patch.
-const int win =3;// (7-1)/2;    // Correlation patches of size (2n+1)*(2n+1)
+const int win = 3;// (7-1)/2;    // Correlation patches of size (2n+1)*(2n+1)
 const float lambdaf = 0.1;  // Weight of regularization (smoothing) term
 const int zoom = 2;         // Zoom factor (to speedup computations)
 const float sigma = 6/zoom; // Gaussian blur parameter for disparity
@@ -259,6 +259,7 @@ doubleImage decode_graph(Graph<int,int,int>& G, int nx, int ny, int nd) {
             D(x, y) = -1;
             for (int d = 0; d < nd; d++){
                 int n = nodeNum(x, y, d, nx, ny);
+                // when we pass from source to sink 
                 if (G.what_segment(n) == Graph<int, int, int>::SINK){
                     D(x, y) = dmin + d;
                     break;
